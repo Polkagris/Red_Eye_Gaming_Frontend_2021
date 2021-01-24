@@ -1,5 +1,10 @@
 <template>
   <!-- $ heroku logs --app regaming -->
+  <!-- 
+  $ heroku config:set NPM_CONFIG_PRODUCTION=false --app regaming
+ »   Warning: heroku update available from 7.42.1 to 7.47.7.
+Setting NPM_CONFIG_PRODUCTION and restarting regaming... done, v8
+NPM_CONFIG_PRODUCTION: false -->
 
   <!--   <div class="home shadow-xl bg-gray-200 w-8/12 nx-auto p-20">
     <h1>{{ currentHero }}</h1>
