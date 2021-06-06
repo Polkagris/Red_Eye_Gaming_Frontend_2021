@@ -1,34 +1,4 @@
 <template>
-  <!-- $ heroku logs --app regaming -->
-  <!-- 
-  $ heroku config:set NPM_CONFIG_PRODUCTION=false --app regaming
- »   Warning: heroku update available from 7.42.1 to 7.47.7.
-Setting NPM_CONFIG_PRODUCTION and restarting regaming... done, v8
-NPM_CONFIG_PRODUCTION: false -->
-
-  <!--   <div class="home shadow-xl bg-gray-200 w-8/12 nx-auto p-20">
-    <h1>{{ currentHero }}</h1>
-    <h2 class="text-3xl text-blue-600 font-extrabold">
-      These are the Heroes of our stories
-    </h2>
-    <input type="text" v-model="newHero" />
-    <h3 v-for="hero in allHeroes" :key="hero">{{ hero }}</h3>
-    <button
-      @click="addHero"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-10 focus:outline-none"
-    >
-      Add Hero
-    </button> -->
-  <!--     <div>
-      <h3
-        class="md:flex bg-gray-100 rounded-xl p-8 md:p-0"
-        v-for="game in gamesResponse"
-        :key="game.name"
-      >
-        {{ game.name }}
-      </h3>
-    </div> -->
-
   <div
     bg-white
     dark:bg-gray-800
@@ -36,7 +6,15 @@ NPM_CONFIG_PRODUCTION: false -->
   >
     <div class="text-7xl font-extrabold w-full font-sans">
       <div
-        class="bg-clip-text pt-16 pb-8 text-transparent text-center bg-gradient-to-r from-blue-400 to-pink-900"
+        class="
+          bg-clip-text
+          pt-16
+          pb-8
+          text-transparent text-center
+          bg-gradient-to-r
+          from-blue-400
+          to-pink-900
+        "
       >
         Welcome to Red Eye Gaming
         <p class="text-2xl text-red-800 pt-5 font-normal">
@@ -49,20 +27,11 @@ NPM_CONFIG_PRODUCTION: false -->
           class="title-image justify-center"
         />
       </div>
-      <!--       <div
-        w-full
-        class="bg-hero-pattern bg-cover"
-        style="
-          background-image: url('https://pixabay.com/get/g16d2761cc0b58d431249a767f8182aeeecb6bc5c7e73415a9ba80a0fc9def55f105fab52a305003ff4e8655db0224731_1920.png');
-        "
-      >
-        <h1 class="text-xl font-semibold" p-16>Free Games Right Now!</h1>
-      </div> -->
     </div>
 
     <figure
       class="flex bg-gray-100 rounded-xl p-8 md:p-0"
-      v-for="game in gamesResponse"
+      v-for="game in filteredGames"
       :key="game.name"
     >
       <img
@@ -71,7 +40,17 @@ NPM_CONFIG_PRODUCTION: false -->
         alt=""
       />
       <div
-        class="w-32 h-32 md:w-48 md:h-auto pt-6 md:p-8 text-center md:text-left space-y-4"
+        class="
+          w-32
+          h-32
+          md:w-48
+          md:h-auto
+          pt-6
+          md:p-8
+          text-center
+          md:text-left
+          space-y-4
+        "
       >
         <blockquote>
           <p class="text-lg font-semibold">
@@ -84,11 +63,10 @@ NPM_CONFIG_PRODUCTION: false -->
       </div>
     </figure>
   </div>
-  <!--   </div> -->
 </template>
 
 <script>
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -97,10 +75,28 @@ export default {
     newHero: "hello world",
     gamesResponse: [],
   }),
-  computed: mapState({
-    currentHero: (state) => state.currentHero,
-    allHeroes: (state) => state.allHeroes,
-  }),
+  computed: {
+    filteredGames() {
+      let filteredGame = this.gamesResponse;
+
+      filteredGame = filteredGame.filter((game) => {
+        return (
+          game.timeFree.includes("Free") || game.name.includes("Unlocking")
+        );
+      });
+
+      filteredGame.map((game) => {
+        this.gamesResponse.filter((gameResponseGame) => {
+          if (gameResponseGame.imageUrl.includes(game.name)) {
+            console.log("gameResponseGame in map:", gameResponseGame);
+            game.imageUrl = gameResponseGame.imageUrl;
+          }
+        });
+      });
+
+      return filteredGame;
+    },
+  },
   methods: {
     addHero() {
       this.$store.dispatch("addHero", this.newHero);
