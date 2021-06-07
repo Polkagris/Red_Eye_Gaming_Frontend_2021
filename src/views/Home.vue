@@ -16,58 +16,76 @@
           to-pink-900
         "
       >
-        Welcome to Red Eye Gaming
+        Red Eye Gaming
         <p class="text-2xl text-red-800 pt-5 font-normal">
-          - Play free games until your eyes bleed -
+          Free games on Epic right now
         </p>
       </div>
-      <div class="flex justify-center">
-        <img
-          src="../assets/red_eye_gaming.png"
-          class="title-image justify-center"
-        />
-      </div>
+
+      <HeaderImage />
     </div>
 
-    <figure
-      class="flex bg-gray-100 rounded-xl p-8 md:p-0"
-      v-for="game in filteredGames"
-      :key="game.name"
-    >
-      <img
-        class="w-32 h-32 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto"
-        :src="game.imageUrl"
-        alt=""
-      />
-      <div
-        class="
-          w-32
-          h-32
-          md:w-48
-          md:h-auto
-          pt-6
-          md:p-8
-          text-center
-          md:text-left
-          space-y-4
-        "
+    <div v-if="this.gamesResponse.length > 0" class="flex">
+      <figure
+        class="flex bg-gray-100 rounded-xl p-20 m-20 md:p-0"
+        v-for="game in filteredGames"
+        :key="game.name"
       >
-        <blockquote>
-          <p class="text-lg font-semibold">
-            {{ game.name }}
-          </p>
-        </blockquote>
-        <figcaption class="font-medium">
-          <div class="text-cyan-600">{{ game.timeFree }}</div>
-        </figcaption>
-      </div>
-    </figure>
+        <img
+          class="
+            w-32
+            h-32
+            md:w-48
+            md:h-auto
+            md:rounded-none
+            rounded-full
+            mx-auto
+          "
+          :src="game.imageUrl"
+          alt=""
+        />
+        <div
+          class="
+            w-32
+            h-32
+            md:w-48
+            md:h-auto
+            pt-6
+            md:p-8
+            text-center
+            md:text-left
+            space-y-4
+          "
+        >
+          <blockquote>
+            <p class="text-lg font-semibold">
+              {{ game.name }}
+            </p>
+          </blockquote>
+          <figcaption class="font-medium">
+            <div class="text-cyan-600">{{ game.timeFree }}</div>
+          </figcaption>
+        </div>
+      </figure>
+    </div>
+    <div
+      v-else
+      class="
+        loader
+        ease-linear
+        rounded-full
+        border-8 border-t-8 border-gray-200
+        h-64
+        w-64
+      "
+    ></div>
   </div>
 </template>
 
 <script>
 // import { mapState } from "vuex";
 import axios from "axios";
+import HeaderImage from "../components/HeaderImage.vue";
 
 export default {
   name: "Home",
@@ -75,6 +93,9 @@ export default {
     newHero: "hello world",
     gamesResponse: [],
   }),
+  components: {
+    HeaderImage,
+  },
   computed: {
     filteredGames() {
       let filteredGame = this.gamesResponse;
@@ -90,6 +111,10 @@ export default {
           if (gameResponseGame.imageUrl.includes(game.name)) {
             console.log("gameResponseGame in map:", gameResponseGame);
             game.imageUrl = gameResponseGame.imageUrl;
+          }
+          if (game.name.includes("Unlocking")) {
+            game.imageUrl =
+              "https://cdn.pixabay.com/photo/2018/02/10/19/19/goal-3144351_960_720.jpg";
           }
         });
       });
@@ -129,5 +154,28 @@ h2 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.loader {
+  border-top-color: #3498db;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
