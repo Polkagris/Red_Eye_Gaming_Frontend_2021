@@ -25,48 +25,29 @@
       <HeaderImage />
     </div>
 
-    <div v-if="this.gamesResponse.length > 0" class="flex">
-      <figure
-        class="flex bg-gray-100 rounded-xl p-20 m-20 md:p-0"
+    <div
+      v-if="this.gamesResponse.length > 0"
+      class="flex w-full justify-center gameListContainer m-30"
+    >
+      <div
         v-for="game in filteredGames"
         :key="game.name"
+        class="w-full items-center"
       >
-        <img
-          class="
-            w-32
-            h-32
-            md:w-48
-            md:h-auto
-            md:rounded-none
-            rounded-full
-            mx-auto
-          "
-          :src="game.imageUrl"
-          alt=""
-        />
-        <div
-          class="
-            w-32
-            h-32
-            md:w-48
-            md:h-auto
-            pt-6
-            md:p-8
-            text-center
-            md:text-left
-            space-y-4
-          "
-        >
-          <blockquote>
-            <p class="text-lg font-semibold">
-              {{ game.name }}
-            </p>
-          </blockquote>
-          <figcaption class="font-medium">
-            <div class="text-cyan-600">{{ game.timeFree }}</div>
-          </figcaption>
+        <div class="flex flex-col individualGame">
+          <img class="sm:16 md:32 lg:46" :src="game.imageUrl" alt="" />
+          <div class="pt-6 text-center space-y-4">
+            <blockquote>
+              <p class="text-lg font-semibold">
+                {{ game.name }}
+              </p>
+            </blockquote>
+            <figcaption class="font-medium">
+              <div class="text-cyan-600">{{ game.timeFree }}</div>
+            </figcaption>
+          </div>
         </div>
-      </figure>
+      </div>
     </div>
     <div
       v-else
@@ -159,6 +140,21 @@ h2 {
   border-top-color: #3498db;
   -webkit-animation: spinner 1.5s linear infinite;
   animation: spinner 1.5s linear infinite;
+}
+
+.image {
+  /*   max-width: 500px;
+  height: 400px; */
+  /*   height: 500px; */
+}
+
+.gameListContainer {
+  /*   min-height: 500px; */
+}
+
+.individualGame {
+  margin: 30px;
+  max-width: 500px;
 }
 
 @-webkit-keyframes spinner {
